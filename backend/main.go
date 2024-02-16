@@ -2,7 +2,16 @@
 package main
 
 import (
+	"context"
+	"log"
+
+	"litemall/backend/web/controller"
+	"litemall/common"
+	"litemall/repository"
+	"litemall/service"
+
 	"github.com/kataras/iris/v12"
+	"github.com/kataras/iris/v12/mvc"
 )
 
 func main() {
@@ -26,11 +35,25 @@ func main() {
 		ctx.View("shared/error.html")
 	})
 
+	// 连接数据库
+	db, err := common.NewMySQLConn()
+	if err != nil {
+		log.Fatal(err)
+	}
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	// 注册控制器
+	productRepository := repository.NewProductManager("product", db)
+	productSerivce := service.NewProductService(productRepository)
+	productParty := app.Party("/product")
+	product := mvc.New(productParty)
+	product.Register(ctx, productSerivce)
+	product.Handle(new(controller.ProductController))
 
 	// 启动服务
 	app.Run(
-		iris.Addr(":8080"),
+		iris.Addr("localhost:8080"),
 		iris.WithoutServerError(iris.ErrServerClosed),
 		iris.WithOptimizations,
 	)
