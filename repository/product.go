@@ -50,7 +50,7 @@ func (p *ProductManager) Conn() (err error) {
 }
 
 // Insert 插入
-func (p *ProductManager) Insert(product *model.Product) (ID int64, err error) {
+func (p *ProductManager) Insert(product *model.Product) (id int64, err error) {
 	// 判断连接是否存在
 	if err = p.Conn(); err != nil {
 		return
@@ -77,7 +77,7 @@ func (p *ProductManager) Insert(product *model.Product) (ID int64, err error) {
 }
 
 // Delete 删除
-func (p *ProductManager) Delete(ID int64) bool {
+func (p *ProductManager) Delete(id int64) bool {
 	// 判断连接是否存在
 	if err := p.Conn(); err != nil {
 		return false
@@ -93,7 +93,7 @@ func (p *ProductManager) Delete(ID int64) bool {
 	}
 
 	// 执行 sql
-	_, err = stmt.Exec(ID)
+	_, err = stmt.Exec(id)
 	if err != nil {
 		return false
 	}
@@ -133,7 +133,7 @@ func (p *ProductManager) Update(product *model.Product) (err error) {
 func (p *ProductManager) SelectByKey(id int64) (product *model.Product, err error) {
 	// 判断连接是否存在
 	if err = p.Conn(); err != nil {
-		return nil, err
+		return &model.Product{}, err
 	}
 
 	// 准备 sql
@@ -144,12 +144,12 @@ func (p *ProductManager) SelectByKey(id int64) (product *model.Product, err erro
 	// 执行 sql
 	row, err := p.sqlConn.Query(sql, id)
 	if err != nil {
-		return nil, err
+		return &model.Product{}, err
 	}
 	defer row.Close()
 	result := common.GetResultRow(row)
 	if len(result) == 0 {
-		return nil, err
+		return &model.Product{}, err
 	}
 
 	product = new(model.Product)

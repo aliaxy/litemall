@@ -11,8 +11,8 @@ type IProductService interface {
 	GetProductByID(int64) (*model.Product, error)
 	GetAllProduct() ([]*model.Product, error)
 	DeleteProductByID(int64) bool
-	InsertProduct(product *model.Product) (int64, error)
-	UpdateProduct(product *model.Product) error
+	InsertProduct(*model.Product) (int64, error)
+	UpdateProduct(*model.Product) error
 }
 
 // ProductService 商品服务实例
