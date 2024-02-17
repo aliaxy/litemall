@@ -5,6 +5,7 @@ go 1.22.0
 require (
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/kataras/iris/v12 v12.2.10
+	golang.org/x/crypto v0.18.0
 )
 
 require (
@@ -53,7 +54,6 @@ require (
 	github.com/vmihailenco/msgpack/v5 v5.4.1 // indirect
 	github.com/vmihailenco/tagparser/v2 v2.0.0 // indirect
 	github.com/yosssi/ace v0.0.5 // indirect
-	golang.org/x/crypto v0.18.0 // indirect
 	golang.org/x/exp v0.0.0-20240112132812-db7319d0e0e3 // indirect
 	golang.org/x/net v0.20.0 // indirect
 	golang.org/x/sys v0.16.0 // indirect
