@@ -55,11 +55,11 @@ func (o *OrderManager) Insert(order *model.Order) (id int64, err error) {
 	}
 
 	// 准备 sql
-	sql := `insert
-			into order
-			(user_id, product_id, order_status)
-			values
-			(?, ?, ?)`
+	sql := "insert " +
+		"into `order` " +
+		"(user_id, product_id, order_status) " +
+		"values " +
+		"(?, ?, ?)"
 	stmt, err := o.sqlConn.Prepare(sql)
 	if err != nil {
 		return 0, err
@@ -82,9 +82,9 @@ func (o *OrderManager) Delete(id int64) bool {
 	}
 
 	// 准备 sql
-	sql := `delete
-			from order
-			where order_id = ?`
+	sql := "delete " +
+		"from order " +
+		"where order_id = ?"
 	stmt, err := o.sqlConn.Prepare(sql)
 	if err != nil {
 		return false
@@ -107,11 +107,11 @@ func (o *OrderManager) Update(order *model.Order) (err error) {
 	}
 
 	// 准备 sql
-	sql := `update product
-			set user_id = ?,
-				product_id = ?,
-				order_status = ?,
-			where order_id = ?`
+	sql := "update `order` " +
+		"set user_id = ?, " +
+		"product_id = ?, " +
+		"order_status = ?, " +
+		"where order_id = ?`"
 	stmt, err := o.sqlConn.Prepare(sql)
 	if err != nil {
 		return

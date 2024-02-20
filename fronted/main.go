@@ -57,10 +57,12 @@ func main() {
 	userPro.Handle(new(controller.UserController))
 
 	product := repository.NewProductManager("product", db)
+	order := repository.NewOrderManager("order", db)
 	productService := service.NewProductService(product)
+	orderService := service.NewOrderService(order)
 	productPro := mvc.New(app.Party("/product"))
 	productPro.Router.Use(middleware.AuthConProduct)
-	productPro.Register(productService, ctx, sess.Start)
+	productPro.Register(productService, orderService, ctx, sess.Start)
 	productPro.Handle(new(controller.ProductController))
 
 	app.Run(
