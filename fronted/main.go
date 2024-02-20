@@ -18,11 +18,14 @@ import (
 func main() {
 	// 创建 iris 实例
 	app := iris.New()
+
 	// 设置错误模式，在mvc模式下提示错误
 	app.Logger().SetLevel("debug")
+
 	// 注册模板
 	template := iris.HTML("./fronted/web/view", ".html").Layout("shared/layout.html").Reload(true)
 	app.RegisterView(template)
+
 	// 设置模版目标
 	app.HandleDir("/public", "./fronted/web/public")
 	app.HandleDir("/html", "./fronted/web/htmlProductShow")
@@ -45,11 +48,18 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
+	// 注册控制器
 	user := repository.NewUserManager("user", db)
 	userService := service.NewUserService(user)
 	userPro := mvc.New(app.Party("/user"))
 	userPro.Register(userService, ctx, sess.Start)
 	userPro.Handle(new(controller.UserController))
+
+	product := repository.NewProductManager("product", db)
+	productService := service.NewProductService(product)
+	productPro := mvc.New(app.Party("/product"))
+	productPro.Register(productService, ctx, sess.Start)
+	productPro.Handle(new(controller.ProductController))
 
 	app.Run(
 		iris.Addr("localhost:8082"),
