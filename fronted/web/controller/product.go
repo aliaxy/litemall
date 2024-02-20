@@ -21,6 +21,7 @@ func (p *ProductController) GetDetail() mvc.View {
 	if err != nil {
 		p.Ctx.Application().Logger().Debug(err)
 	}
+
 	return mvc.View{
 		Layout: "shared/productLayout.html",
 		Name:   "product/view.html",

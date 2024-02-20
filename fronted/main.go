@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"litemall/common"
+	"litemall/fronted/middleware"
 	"litemall/fronted/web/controller"
 	"litemall/repository"
 	"litemall/service"
@@ -58,6 +59,7 @@ func main() {
 	product := repository.NewProductManager("product", db)
 	productService := service.NewProductService(product)
 	productPro := mvc.New(app.Party("/product"))
+	productPro.Router.Use(middleware.AuthConProduct)
 	productPro.Register(productService, ctx, sess.Start)
 	productPro.Handle(new(controller.ProductController))
 
