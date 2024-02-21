@@ -2,8 +2,10 @@
 package controller
 
 import (
+	"fmt"
 	"strconv"
 
+	"litemall/encrypt"
 	"litemall/model"
 	"litemall/service"
 	"litemall/tool"
@@ -61,10 +63,9 @@ func (u *UserController) GetLogin() mvc.View {
 // PostLogin 登录请求
 func (u *UserController) PostLogin() mvc.Response {
 	// 1.获取用户提交的表单信息
-	var (
-		username = u.Ctx.FormValue("user_name")
-		password = u.Ctx.FormValue("user_password")
-	)
+	username := u.Ctx.FormValue("user_name")
+	password := u.Ctx.FormValue("user_password")
+
 	// 2、验证账号密码正确
 	user, ok := u.Service.IsPwdSuccess(username, password)
 	if !ok {
@@ -75,7 +76,14 @@ func (u *UserController) PostLogin() mvc.Response {
 
 	// 3、写入用户ID到cookie中
 	tool.GlobalCookie(u.Ctx, "uid", strconv.FormatInt(user.ID, 10))
-	u.Session.Set("userID", strconv.FormatInt(user.ID, 10))
+	uidByte := []byte(strconv.FormatInt(user.ID, 10))
+	uidString, err := encrypt.EnPasswordCode(uidByte)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// 4、写入用户 ID 到浏览器
+	tool.GlobalCookie(u.Ctx, "sign", uidString)
 
 	return mvc.Response{
 		Path: "/product/",
