@@ -28,7 +28,7 @@ func (f *Filter) GetFilterHandle(uri string) FilterHandle {
 }
 
 // WebHandle 声明 web 处理函数
-type WebHandle func(rw http.ResponseWriter, req *http.Request) error
+type WebHandle func(rw http.ResponseWriter, req *http.Request)
 
 // Handle 执行拦截器 返回函数类型
 func (f *Filter) Handle(webHandle WebHandle) func(rw http.ResponseWriter, req *http.Request) {
