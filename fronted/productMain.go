@@ -1,4 +1,4 @@
-// Package main
+// Package main 商品静态页面
 package main
 
 // import (

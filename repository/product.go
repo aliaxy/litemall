@@ -3,6 +3,7 @@ package repository
 
 import (
 	"database/sql"
+	"strconv"
 
 	"litemall/common"
 	"litemall/model"
@@ -16,6 +17,7 @@ type IProduct interface {
 	Update(*model.Product) error
 	SelectByKey(int64) (*model.Product, error)
 	SelectAll() ([]*model.Product, error)
+	SubProductNum(int64) error
 }
 
 // ProductManager 商品接口的具体实现
@@ -187,4 +189,18 @@ func (p *ProductManager) SelectAll() (products []*model.Product, err error) {
 	}
 
 	return
+}
+
+// SubProductNum 商品减一
+func (p *ProductManager) SubProductNum(productID int64) error {
+	if err := p.Conn(); err != nil {
+		return err
+	}
+	sql := "update product set productNum = productNum - 1 where ID = ?"
+	stmt, err := p.sqlConn.Prepare(sql)
+	if err != nil {
+		return err
+	}
+	_, err = stmt.Exec(strconv.FormatInt(productID, 10))
+	return err
 }

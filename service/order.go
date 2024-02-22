@@ -13,6 +13,7 @@ type IOrderService interface {
 	DeleteOrderByID(int64) bool
 	InsertOrder(*model.Order) (int64, error)
 	UpdateOrder(*model.Order) error
+	InsertOrderByMessage(*model.Message) (int64, error)
 }
 
 // OrderService 订单服务实例
@@ -55,4 +56,14 @@ func (o *OrderService) InsertOrder(order *model.Order) (int64, error) {
 // UpdateOrder 更新订单
 func (o *OrderService) UpdateOrder(order *model.Order) error {
 	return o.OrderRepository.Update(order)
+}
+
+// InsertOrderByMessage 根据消息创建订单
+func (o *OrderService) InsertOrderByMessage(message *model.Message) (orderID int64, err error) {
+	order := &model.Order{
+		UserID:    message.UserID,
+		ProductID: message.ProductID,
+		Status:    model.OrderSuccess,
+	}
+	return o.InsertOrder(order)
 }

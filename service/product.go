@@ -13,6 +13,7 @@ type IProductService interface {
 	DeleteProductByID(int64) bool
 	InsertProduct(*model.Product) (int64, error)
 	UpdateProduct(*model.Product) error
+	SubNumberOne(int64) error
 }
 
 // ProductService 商品服务实例
@@ -50,4 +51,9 @@ func (p *ProductService) InsertProduct(product *model.Product) (int64, error) {
 // UpdateProduct 更新商品
 func (p *ProductService) UpdateProduct(product *model.Product) error {
 	return p.productRepository.Update(product)
+}
+
+// SubNumberOne 商品减一
+func (p *ProductService) SubNumberOne(productID int64) error {
+	return p.productRepository.SubProductNum(productID)
 }

@@ -5,6 +5,7 @@ go 1.22.0
 require (
 	github.com/go-sql-driver/mysql v1.7.1
 	github.com/kataras/iris/v12 v12.2.10
+	github.com/streadway/amqp v1.1.0
 	golang.org/x/crypto v0.18.0
 )
 
